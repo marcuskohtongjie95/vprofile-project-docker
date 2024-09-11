@@ -57,6 +57,18 @@ pipeline {
               }
             }
         }
+
+        
+        stage('Trivy scan image') {
+            steps{
+              script {
+                sh "trivy image ${registry}:$BUILD_NUMBER"
+                /*sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${registry}:$BUILD_NUMBER"
+                */
+
+              }
+            }
+        }
         
         stage('Upload Image') {
           steps{
