@@ -141,6 +141,14 @@ pipeline {
             steps {
                 script{
                     sh "aws eks update-kubeconfig --name gitops-proj-eks --region us-east-1"
+
+                    // Helm deploy command
+                    sh '''
+                    helm upgrade --install my-app-release helm/vprofilecharts \
+                        --namespace default \
+                        --set image.repository=$registry \
+                        --set image.tag=$BUILD_NUMBER
+                    '''
                     }
                 }
             }
