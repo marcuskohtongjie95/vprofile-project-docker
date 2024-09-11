@@ -10,6 +10,8 @@ pipeline {
     environment {
         registry = "marcuskoh95/gitops-proj"
         registryCredential = 'dockerhub-cred'
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_KEY_ID = credentials('AWS_SECRET_KEY_ID')
     }
 
     stages{
@@ -135,7 +137,13 @@ pipeline {
         }
         */
 
+        stage('Deploy to EKS') {
+            steps {
+                script{
+                    sh "aws eks update-kubeconfig --name gitops-proj-eks --region us-east-1"
+                    }
+                }
+            }
+        }
+
     }
-
-
-}
