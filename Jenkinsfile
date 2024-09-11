@@ -11,7 +11,7 @@ pipeline {
         registry = "marcuskoh95/gitops-proj"
         registryCredential = 'dockerhub-cred'
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_KEY_ID = credentials('AWS_SECRET_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
 
     stages{
