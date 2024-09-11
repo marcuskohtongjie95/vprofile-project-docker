@@ -14,6 +14,13 @@ pipeline {
 
     stages{
 
+        stage('Git Checkout'){
+            steps {
+                git branch: 'cicd-kube', url: 'https://github.com/marcuskohtongjie95/vprofile-project-docker.git'
+            }
+        }
+
+
         stage('BUILD'){
             steps {
                 sh 'mvn clean install -DskipTests'
@@ -29,6 +36,14 @@ pipeline {
         stage('UNIT TEST'){
             steps {
                 sh 'mvn test'
+            }
+        }
+
+        stage('Trivy scan fs') {
+            steps{
+              script {
+                sh "trivy fs --format table -o trivy-fs-report.html ."
+              }
             }
         }
 
@@ -62,7 +77,7 @@ pipeline {
         stage('Trivy scan image') {
             steps{
               script {
-                sh "trivy image ${registry}:$BUILD_NUMBER"
+                sh "trivy image ${registry}:$BUILD_NUMBER -o trivy-image-report.html"
                 /*sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${registry}:$BUILD_NUMBER"
                 */
 
