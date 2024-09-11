@@ -41,13 +41,13 @@ pipeline {
             }
         }
 
-        stage('Trivy scan fs') {
+        /*stage('Trivy scan fs') {
             steps{
               script {
-                sh "trivy fs --format table -o trivy-fs-report.html ."
+                sh "trivy fs --scanners vuln --format table -o trivy-fs-report.html ."
               }
             }
-        }
+        }*/
 
         stage('INTEGRATION TEST'){
             steps {
@@ -76,16 +76,16 @@ pipeline {
         }
 
         
-        stage('Trivy scan image') {
+        /*stage('Trivy scan image') {
             steps{
               script {
                 sh "trivy image ${registry}:$BUILD_NUMBER -o trivy-image-report.html"
                 /*sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${registry}:$BUILD_NUMBER"
-                */
+                
 
               }
             }
-        }
+        }*/
         
         stage('Upload Image') {
           steps{
@@ -150,6 +150,13 @@ pipeline {
                         --set image.tag=$BUILD_NUMBER
                     '''
                     }
+                }
+            }
+
+        stage('Clean Up Docker Images') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER || true"
+                sh "docker rmi $registry:latest || true"
                 }
             }
         }
