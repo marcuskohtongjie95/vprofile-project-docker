@@ -1,14 +1,15 @@
 pipeline {
 
     agent any
-/*
+
 	tools {
+        jdk 'jdk17'
         maven "maven3"
     }
-*/
+
     environment {
-        registry = "imranvisualpath/vproappdock"
-        registryCredential = 'dockerhub'
+        registry = "marcuskoh95/gitops-proj"
+        registryCredential = 'dockerhub-cred'
     }
 
     stages{
@@ -57,7 +58,7 @@ pipeline {
             }
         }
         
-        stage('Deploy Image') {
+        stage('Upload Image') {
           steps{
             script {
               docker.withRegistry( '', registryCredential ) {
@@ -77,11 +78,11 @@ pipeline {
         stage('CODE ANALYSIS with SONARQUBE') {
 
             environment {
-                scannerHome = tool 'mysonarscanner4'
+                scannerHome = tool 'sonar-scanner'
             }
 
             steps {
-                withSonarQubeEnv('sonar-pro') {
+                withSonarQubeEnv('sonarqube-server') {
                     sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
                    -Dsonar.projectName=vprofile-repo \
                    -Dsonar.projectVersion=1.0 \
@@ -97,12 +98,15 @@ pipeline {
                 }
             }
         }
+
+        /*
         stage('Kubernetes Deploy') {
 	  agent { label 'KOPS' }
             steps {
                     sh "helm upgrade --install --force vproifle-stack helm/vprofilecharts --set appimage=${registry}:${BUILD_NUMBER} --namespace prod"
             }
         }
+        */
 
     }
 
