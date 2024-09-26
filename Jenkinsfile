@@ -146,8 +146,8 @@ pipeline {
                     sh '''
                     helm upgrade --install my-app-release helm/vprofilecharts \
                         --namespace default \
-                        --set image.repository=$registry \
-                        --set image.tag=$BUILD_NUMBER
+                        --set appimage.repository=$registry \
+                        --set appimage.tag=$BUILD_NUMBER
                     '''
                     }
                 }
