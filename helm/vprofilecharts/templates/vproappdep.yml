@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: vproapp
-        image: "{{ .Values.appimage.repository }}:{{ .Values.appimage.tag }}"
+        image: "{{ .Values.appimage.repository | default "marcuskoh95/gitops-proj" }}:{{ .Values.appimage.tag | default "latest" }}"
         ports:
         - name: vproapp-port
           containerPort: 8080
