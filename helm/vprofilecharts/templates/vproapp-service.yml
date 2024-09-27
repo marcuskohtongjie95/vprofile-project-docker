@@ -9,4 +9,4 @@ spec:
     protocol: TCP
   selector:
     app: vproapp
-  type: LoadBalancer
+  type: ClusterIP
