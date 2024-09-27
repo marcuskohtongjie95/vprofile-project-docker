@@ -7,6 +7,17 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
+  - host: #vproapp.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vproapp-service
+            port:
+              number: 80 #test3
+
   - host: vproapp.example.com
     http:
       paths:
