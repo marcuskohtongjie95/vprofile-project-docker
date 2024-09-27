@@ -4,6 +4,12 @@
 
 replicaCount: 1
 
+appimage:
+  repository: "marcuskoh95/gitops-proj"
+  #pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
 image:
   repository: nginx
   #pullPolicy: IfNotPresent
