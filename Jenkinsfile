@@ -14,6 +14,11 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
 
+    triggers {
+        // Triggers the build when changes are pushed to GitHub
+        githubPush()
+    }
+
     stages{
 
         stage('Git Checkout'){

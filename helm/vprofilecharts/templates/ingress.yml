@@ -16,4 +16,4 @@ spec:
           service:
             name: vproapp-service
             port:
-              number: 80
+              number: 80 #test3
