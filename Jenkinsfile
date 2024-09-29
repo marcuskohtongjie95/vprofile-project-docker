@@ -6,12 +6,17 @@ pipeline {
         jdk 'jdk17'
         maven "maven3"
     }
-
+ 
     environment {
         registry = "marcuskoh95/gitops-proj"
         registryCredential = 'dockerhub-cred'
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+
+        gitRepo = 'https://github.com/marcuskohtongjie95/vprofile-project-docker.git'
+        branchName = 'cicd-kube'
+        githubCredentials = credentials('GITHUB_TOKEN') // Use Jenkins Credentials to store the GitHub PAT
+
     }
 
     triggers {
@@ -23,7 +28,7 @@ pipeline {
 
         stage('Git Checkout'){
             steps {
-                git branch: 'cicd-kube', url: 'https://github.com/marcuskohtongjie95/vprofile-project-docker.git'
+                git branch: "${branchName}", url: "${gitRepo}"
             }
         }
 
@@ -101,6 +106,33 @@ pipeline {
               }
             }
           }
+        }
+
+        stage('Update Helm values.yaml') {
+            steps {
+                script {
+                    // Update the Helm chart values.yaml file with the latest Docker image tag
+                    sh """
+                        sed -i 's|appimage:\\s*tag:.*|appimage:\\n  tag: ${BUILD_NUMBER}|' helm/vprofilecharts/values.yaml
+                    """
+                }
+            }
+        }
+        
+        stage('Commit and Push Changes after Helm values.yaml is updated') {
+            steps {
+                script {
+                    // Configure git with Jenkins CI user credentials and commit the changes
+                    sh """
+                    git config user.email "marcuskoh95@gmail.com"
+                    git config user.name "marcuskoh95"
+                    git add helm/vprofilecharts/values.yaml
+                    git commit -m "Updated appimage tag to ${BUILD_NUMBER}"
+                    git push https://"${githubCredentials}"@github.com/marcuskohtongjie95/vprofile-project-docker.git "${branchName}"
+                    """
+                    
+                }
+            }
         }
 
         stage('Remove Unused docker image') {
