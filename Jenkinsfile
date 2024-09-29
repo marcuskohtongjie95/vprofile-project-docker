@@ -123,14 +123,16 @@ pipeline {
             steps {
                 script {
                     // Configure git with Jenkins CI user credentials and commit the changes
+                withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'TOKEN')]) {
                     sh """
                     git config user.email "marcuskoh95@gmail.com"
                     git config user.name "marcuskoh95"
                     git add helm/vprofilecharts/values.yaml
-                    git commit -m "Updated appimage tag to ${BUILD_NUMBER}"
-                    git push https://"${githubCredentials}"@github.com/marcuskohtongjie95/vprofile-project-docker.git "${branchName}"
+                    git commit -m "Updated appimage tag to ${BUILD_NUMBER}" || echo "No changes to commit"
+                    git push https://"${TOKEN}"@github.com/marcuskohtongjie95/vprofile-project-docker.git "${branchName}"
                     """
                     
+                    }
                 }
             }
         }
