@@ -5,9 +5,9 @@ This repo contains
 1. Jenkinsfile for GitOps 
 2. Helm charts to deploy onto EKS
 3. Source code for web app stack written in Java
-- Tomcat Server running web application server
-- MySQL DB storing login details
-- RabbitMQ connected to Tomcat server (dummy service)
+    - Tomcat Server running web application server
+    - MySQL DB storing login details
+    - RabbitMQ connected to Tomcat server (dummy service)
 
 ## Helm Charts
 1. Deployment files
