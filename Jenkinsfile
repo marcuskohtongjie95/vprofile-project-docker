@@ -14,7 +14,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
 
         gitRepo = 'https://github.com/marcuskohtongjie95/vprofile-project-docker.git'
-        branchName = 'cicd-kube'
+        branchName = 'main'
         githubCredentials = credentials('GITHUB_TOKEN') // Use Jenkins Credentials to store the GitHub PAT
 
     }
