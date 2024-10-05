@@ -105,9 +105,8 @@ pipeline {
             steps{
               script {
                 sh "trivy image ${registry}:$BUILD_NUMBER -o trivy-image-report.html"
-                /*sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${registry}:$BUILD_NUMBER"
+                //sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${registry}:$BUILD_NUMBER"
                 
-
               }
             }
         }
@@ -189,6 +188,6 @@ pipeline {
                 sh "docker rmi $registry:latest || true"
                 }
             }
-        }
-
     }
+
+}
