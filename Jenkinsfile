@@ -101,7 +101,7 @@ pipeline {
         }
 
         
-        /*stage('Trivy scan image') {
+        stage('Trivy scan image') {
             steps{
               script {
                 sh "trivy image ${registry}:$BUILD_NUMBER -o trivy-image-report.html"
@@ -110,7 +110,7 @@ pipeline {
 
               }
             }
-        }*/
+        }
         
         stage('Upload Image') {
           steps{
