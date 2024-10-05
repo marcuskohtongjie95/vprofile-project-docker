@@ -74,14 +74,6 @@ pipeline {
             }
         }
 
-        /*stage('Trivy scan fs') {
-            steps{
-              script {
-                sh "trivy fs --scanners vuln --format table -o trivy-fs-report.html ."
-              }
-            }
-        }*/
-
         stage('INTEGRATION TEST'){
             steps {
                 sh 'mvn verify -DskipUnitTests'
