@@ -182,6 +182,26 @@ pipeline {
                 }
             }
 
+        stage('Install NGINX Ingress Controller using Helm') {
+            steps {
+                script {
+                    // Set the Helm repository for NGINX Ingress Controller
+                    sh """
+                        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+                        helm repo update
+                    """
+                    
+                    // Deploy NGINX Ingress Controller to the EKS cluster
+                    sh """
+                        helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
+                        --namespace ingress-nginx --create-namespace \
+                        --set controller.replicaCount=2 \
+                        --set controller.service.type=LoadBalancer
+                    """
+                }
+            }
+        }
+
         stage('Clean Up Docker Images') {
             steps {
                 sh "docker rmi $registry:$BUILD_NUMBER || true"
