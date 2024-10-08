@@ -11,10 +11,10 @@ spec:
   - host: #<your-alb-dns-name>  # ALB DNS name
     http:
       paths:
-      - path: /prometheus
+      - path: /grafana
         pathType: Prefix
         backend:
           service:
-            name: prometheus-service
+            name: grafana
             port:
               number: 9090
