@@ -21,3 +21,7 @@
 .idea/
 *.tmproj
 .vscode/
+
+ingress-argocd.yml
+ingress-grafana.yml
+ingress-prometheus.yml

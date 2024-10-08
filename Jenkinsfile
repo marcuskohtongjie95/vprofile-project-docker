@@ -127,7 +127,7 @@ pipeline {
                 script {
                     // Update the Helm chart values.yaml file with the latest Docker image tag
                     sh """
-                        sed -i 's|appimage:\\s*tag:.*|appimage:\\n  tag: ${BUILD_NUMBER}|' helm/vprofilecharts/values.yaml
+                        sed -i 's|\\(appimage:.*\\n.*tag: \\).*|\\1"${BUILD_NUMBER}"|' helm/vprofilecharts/values.yaml
                     """
                 }
             }
@@ -181,26 +181,6 @@ pipeline {
                     }
                 }
             }
-
-        stage('Install NGINX Ingress Controller using Helm') {
-            steps {
-                script {
-                    // Set the Helm repository for NGINX Ingress Controller
-                    sh """
-                        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-                        helm repo update
-                    """
-                    
-                    // Deploy NGINX Ingress Controller to the EKS cluster
-                    sh """
-                        helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
-                        --namespace ingress-nginx --create-namespace \
-                        --set controller.replicaCount=2 \
-                        --set controller.service.type=LoadBalancer
-                    """
-                }
-            }
-        }
 
         stage('Clean Up Docker Images') {
             steps {
